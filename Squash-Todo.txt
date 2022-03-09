@@ -1,0 +1,17 @@
+
+native:
+
+jni:
+- make sure the JNI string converts the numbers to dot decimal
+  - even on a comma decimal machine, if Java is parsing a dot decimal string with Double.toString()
+
+java:
+- Proper JavaDoc
+
+build process:
+- consider how to make this the best maven build
+- consider making this a bazel build
+
+other:
+- reread updated readme
+
