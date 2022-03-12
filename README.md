@@ -20,9 +20,9 @@ Currently supported on Intel processors with Linux OS.
 
 ## How to use
 Build the jRAPL jar with the Makefile in the root of this project. It will trigger sub-Makefiles and Maven to build and piece together
-each component, ending in the jar file. Move/copy this Jar anywhere you'd like and include it in the classpath of any project that references
-it. Note that there is a native library in the Jar, so keep this in mind if you're compiling a larger Jar out of this one; you must ensure that
-the native library is present in any larger Jar that encompasses this project, otherwise jRAPL can't find the essential native code.
+each component, ending in the jar file, `jRAPL.jar`. Move/copy this Jar anywhere you'd like and include it in the classpath of any project that references it. Then you can `import jRAPL.AsyncEnergyMonitor`, for (example) and any other relevant classes. Note that there is a native library in the Jar, so keep this
+in mind if you're compiling a larger Jar out of this one; you must ensure that the native library is present in any larger Jar that encompasses this project,
+otherwise jRAPL can't find the essential native code.
 
 ## Checking if it works on your machine
 To see if your computer's architecture is supported, run 
@@ -65,7 +65,8 @@ the intended name ;)
 Simply add a new row with your platform information, available in Intel
 documentation.  The rightmost 4 columns indicate whether your platform
 supports RAPL for each power domain. It's the updater's responsibility
-to know this information and accurately report it.
+to know this information and accurately report it. Columns are
+delimited by any amount of whitespace.
 
 ### Energy Samples
 How to access the energy samples is described in the below sections. There are two ways to implement a sample: as a Java object and as a Java array.
@@ -116,6 +117,11 @@ memory leaks and unclosed file descriptors.
 #### Synchronous Energy Monitor
 The `jRAPL.EnergyMonitor` class is for taking energy samples during the execution of your main program. Sample code:
 ```
+import jRAPL.EnergyMonitor;
+import jRAPL.EnergySample;
+import jRAPL.EnergyMeasurement;
+// ...
+
 EnergyMonitor m = new EnergyMonitor();
 m.activate();
 
@@ -133,7 +139,11 @@ The `jRAPL.AsyncEnergyMonitor` class is a monitor that takes samples at a set sa
 You can extract samples in your main thread with the `getLastKSamples()` method or you can dump results to a file in CSV format with `writeFileCSV()`.
 Sample code:
 ```
-AsyncEnergyMonitor m = new AsyncEnergyMonitorJavaSide();
+import jRAPL.AsyncEnergyMonitor;
+import jRAPL.EnergyMeasurement;
+// ...
+
+AsyncEnergyMonitor m = new AsyncEnergyMonitor();
 m.activate();
 m.setSamplingRate(100);
 
@@ -141,13 +151,12 @@ m.start();
 doWork();
 m.stop();
 
-EnergyMeasurement[] last100 = m.getLastKMeasurements(100); // for if necessary to do online processing of energy, as opposed to profiling and dumping.
-
-m.writeFileCSV('data/monitored-activity.csv');
+EnergyMeasurement[] last100 = m.getLastKMeasurements(100); // if you want to do online processing of data
+m.writeFileCSV('data/monitored-activity.csv'); // if you want to save the measurements for later processing
 
 m.deactivate();
 ```
-This will take energy samples ever 100ms while `doWork()` executes and will then dump the collected data to a CSV file.
+This will take energy samples every 100ms while `doWork()` executes and provide the samples to the user either in energy object or file format.
 
 ### Contact
 Any questions, feel free to email. Alejandro Servetto {aservet1@binghamton.edu}
