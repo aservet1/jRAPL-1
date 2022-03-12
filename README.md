@@ -130,10 +130,11 @@ EnergySample before = m.getSample();
 doWork();
 EnergySample after = m.getSample();
 
-EnergyMeasurement joules = EnergyMeasurement.between(before, after);
+EnergyMeasurement energy = EnergyMeasurement.between(before, after);
 m.deactivate();
 ```
-You now have the amount of energy your machine consumed over the course of `doWork()` in the `diff` variable.
+You now have the amount of energy your machine consumed over the course of `doWork()` in the `energy` variable. Note that the object
+also stores the time elapsed while this energy was consumed, which you can take and use to do power calculations.
 
 #### Asynchronous Energy monitor
 The `jRAPL.AsyncEnergyMonitor` class is a monitor that takes samples at a set sampling rate in a background thread while your main program does its own thing.
