@@ -2,8 +2,9 @@
 
 ## Background
 jRAPL is a computer energy monitoring API in Java. RAPL stands for Running Average Power Limiting, an interface that Intel provides to monitor power consumption
-and set power limits. jRAPL uses the energy monitoring technology and implements it in Java, abstracting out low-level details about register reading and how to
-access the data.
+and set power limits. jRAPL is a Java wrapper around the energy monitoring portion of the interface. If there comes a need for jRAPL to have the power limiting
+features as well, this can be implemented, just open up an issue on this branch. The RAPL interface developed for reading energy status only needs a few updates from
+here to be able to manipulate energy status.
 
 This is an extension of the [original jRAPL](https://github.com/kliu20/jRAPL). That first version was made by one of the researchers under my advisor
 at university. It was used for several PhD projects by different members of the team. As an undergrad, part of my undergraduate research project was to take the 
